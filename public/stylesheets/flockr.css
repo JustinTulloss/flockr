@@ -1,5 +1,5 @@
 html {
-    font: 16pt arial,helvetica,sans-serif;
+    font: 14pt 'Lucida Grande',sans-serif;
     color: #444;
 }
 
@@ -29,17 +29,58 @@ h1 {
     margin: 20px;
 }
 
+#twitter {
+    text-align: center;
+    margin: 25px 0;
+}
+
+#status {
+    width: 450px;
+}
+
+.r {
+    clear: both;
+    padding: 0;
+}
+
+.feed-grid {
+}
+
+.feed-column {
+    width: 50%;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.feed-panel {
+    margin: 0 50px
+}
+
+.feed-column .left .feed-panel{
+    margin-right: 25px;
+}
+
+.feed-column .right .feed-panel {
+    margin-left: 25px;
+}
+
 .feed {
-    margin: 50px;
 }
 
 .feed .title {
     background: #FFCC66;
     padding: 0 10px;
+    margin: 0;
 }
 
 .feed .tweet {
-    margin: 30px;
+    overflow: hidden;
 }
 
 .tweet-user {

@@ -9,6 +9,7 @@
                 [:head
                     [:title title]
                     [:link {:rel "stylesheet", :href "/stylesheets/flockr.css"}]
+                    [:script {:src "/javascripts/jquery-1.3.2.min.js", :type "text/javascript"}]
                 ]
             [:body
                 [:div#menu {:class "menu"}
@@ -27,7 +28,7 @@
         (html 
             [:div {:class "tweet"} 
                 [:div {:class "tweet-text"} (tweet "text")]
-                [:div {:class "tweet-user"} ((tweet "user") "name") ]
+                [:div {:class "tweet-user"} ((tweet "user" {}) "name" '()) ]
             ])))
 
 (defn twitter-feed

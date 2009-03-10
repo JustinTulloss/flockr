@@ -1,28 +1,19 @@
-(load-file "./template.clj")
+(load-file "./controllers.clj")
 
 (ns flockr
-    (:use compojure clojure.contrib.json.read clj-http-client.core)
-    (:refer flockr.template))
+    (:use compojure)
+    (:refer flockr.controllers))
 
-(def *twitter-url* "http://twitter.com/statuses/public_timeline.json")
-
-(defservlet home
+(defservlet app
     (GET "/"
-        (page "Flockr"
-            (html 
-                [:h1 {:class "title"} "Flockr"]
-                [:h2 "Twitter Portal"]
-                [:a {:href "me"} "View My Twitter"])))
+        (home))
 
     (GET "/logout"
         "Logged Out")
 
     (GET "/:twitter-name"
-        (page "Your Flock" 
-            (html [:h1 "Welcome " (route :twitter-name)]
-                (map twitter-status
-                    (read-json-string (let [[status headers body]
-                        (http-get *twitter-url*)] body))))))
+        (flockr (route :twitter-name)))
+
     (GET "/*"
         (or (serve-file (route :*)) :next))
 
@@ -31,4 +22,4 @@
 
 (run-server 
     {:port 8080}
-    "/*" home)
+    "/*" app)

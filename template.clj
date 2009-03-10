@@ -25,8 +25,14 @@
 (defn twitter-status 
     ([tweet]
         (html 
-            [:p {:class "tweet"} 
+            [:div {:class "tweet"} 
                 [:div {:class "tweet-text"} (tweet "text")]
                 [:div {:class "tweet-user"} ((tweet "user") "name") ]
             ])))
+
+(defn twitter-feed
+    ([title tweets]
+        (html [:div {:class "feed"}
+                [:div {:class "title"} title]
+                (map twitter-status tweets)])))
 

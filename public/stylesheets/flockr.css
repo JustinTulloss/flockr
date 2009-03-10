@@ -1,5 +1,5 @@
 html {
-    font: 16pt ARIAL,HELVETICA,sans-serif;
+    font: 16pt arial,helvetica,sans-serif;
     color: #444;
 }
 
@@ -20,11 +20,36 @@ body {
     margin: 0 10px;
 }
 
+h1 {
+    text-align: center;
+    color: #559900;
+}
+
 .content {
     margin: 20px;
 }
 
+.feed {
+    margin: 50px;
+}
+
+.feed .title {
+    background: #FFCC66;
+    padding: 0 10px;
+}
+
+.feed .tweet {
+    margin: 30px;
+}
+
+.tweet-user {
+    text-align: right;
+    font-size: 12pt;
+    margin: 10px;
+}
+
 .footer {
+    margin-top: 10px;
     border-top: 1px solid #FF6600;
     padding: 10px;
     text-align: center;

@@ -4,21 +4,29 @@
 (defn page
     ([title body] 
         (html 
+            (doctype :html4)
             [:html
                 [:head
                     [:title title]
+                    [:link {:rel "stylesheet", :href "/stylesheets/flockr.css"}]
                 ]
             [:body
-                [:div#menu "Menu"]
-                    body
+                [:div#menu {:class "menu"}
+                    [:a {:href "/"} "home"]
+                    [:a {:href "/logout"} "logout"]
+                ]
+                body
+                [:div#footer {:class "footer"}
+                    "A Justin M. Tulloss Production"
+                ]
             ]
-        ]))) 
+        ])))
 
 (defn twitter-status 
     ([tweet]
         (html 
             [:p {:class "tweet"} 
-                [:div {:class "tweet-text"} (get tweet "text")]
-                [:div {:class "tweet-user"} (get (get tweet "user") "name") ]
+                [:div {:class "tweet-text"} (tweet "text")]
+                [:div {:class "tweet-user"} ((tweet "user") "name") ]
             ])))
 

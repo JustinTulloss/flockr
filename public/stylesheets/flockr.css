@@ -1,0 +1,33 @@
+html {
+    font: 16pt ARIAL,HELVETICA,sans-serif;
+    color: #444;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.menu {
+    margin: 0;
+    padding: 15px;
+    text-align: right;
+    background: #FFCC66;
+    border-bottom: 8px solid #FF6600;
+}
+
+.menu a {
+    margin: 0 10px;
+}
+
+.content {
+    margin: 20px;
+}
+
+.footer {
+    border-top: 1px solid #FF6600;
+    padding: 10px;
+    text-align: center;
+    font-size: 12pt;
+}
+

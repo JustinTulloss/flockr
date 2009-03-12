@@ -1,12 +1,11 @@
 (load-file "./template.clj")
+(load-file "./twitter-model.clj")
 
 (ns flockr.controllers
     (:use compojure) 
     (:use clojure.contrib.json.read)
     (:use clj-http-client.core)
     (:refer flockr.template))
-
-(def *twitter-url* "http://twitter.com/statuses/public_timeline.json")
 
 (defn flockr
     ([twitter-name session]
@@ -21,31 +20,22 @@
                     [:div.feed-grid
                         [:div {:class "feed-column left"}
                             [:div.feed-panel
-                                (twitter-feed "Public"
-                                    (read-json-string (let [[status headers body]
-                                        (http-get *twitter-url*)] body)))
+                                (twitter-feed "Public" (twitter/rest-get "public_timeline"))
                             ]
                             [:div.feed-panel
-                                (twitter-feed "Friend Feed"
-                                    (read-json-string (let [[status headers body]
-                                        (http-get *twitter-url*)] body)))
+                                (twitter-feed "Public" (twitter/rest-get "public_timeline"))
                             ]
                             [:div.feed-panel
-                                (twitter-feed "Friend Feed"
-                                    (read-json-string (let [[status headers body]
-                                        (http-get *twitter-url*)] body)))
+                                (twitter-feed "Public" (twitter/rest-get "public_timeline"))
                             ]
                         ]
                         [:div {:class "feed-column right"}
                             [:div.feed-panel
-                                (twitter-feed "Friend Feed"
-                                    (read-json-string (let [[status headers body]
-                                        (http-get *twitter-url*)] body)))
+                                (twitter-feed "Friends" 
+                                (twitter/rest-get "friends_timeline" 
+                                    (@session :twitter-user) (@session :twitter-password)))
                             ]
                             [:div.feed-panel
-                                (twitter-feed "Friend Feed"
-                                    (read-json-string (let [[status headers body]
-                                        (http-get *twitter-url*)] body)))
                             ]
                             [:div.feed-panel
                                 (twitter-feed "#palmpre"

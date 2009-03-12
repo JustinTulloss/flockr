@@ -9,10 +9,13 @@
         (home))
 
     (GET "/logout"
-        "Logged Out")
+        (logout session))
+
+    (POST "/login"
+        (login params session))
 
     (GET "/:twitter-name"
-        (flockr (route :twitter-name)))
+        (flockr (route :twitter-name) session))
 
     (GET "/*"
         (or (serve-file (route :*)) :next))

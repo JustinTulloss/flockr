@@ -10,6 +10,8 @@
                     [:title title]
                     [:link {:rel "stylesheet", :href "/stylesheets/flockr.css"}]
                     [:script {:src "/javascripts/jquery-1.3.2.min.js", :type "text/javascript"}]
+                    [:script {:src "/javascripts/cobra.js", :type "text/javascript"}]
+                    [:script {:src "/javascripts/flockr.js", :type "text/javascript"}]
                 ]
             [:body
                 [:div#menu {:class "menu"}

@@ -25,11 +25,28 @@
             ]
         ])))
 
+(defn urlize
+    "A function that takes some text and creates links out of URLs
+    that it finds"
+    ([text]
+        (.replaceAll 
+            (re-matcher #"https?://[-\w]+\.\w[-\w/]*+" text)
+        (html [:a {:href "$0"} "$0"])))) 
+
+(defn link-replies
+    "Takes a tweet and links the @<username> components to the appropriate
+    profiles"
+    ([text]
+        (.replaceAll 
+            (re-matcher #"@(\w+)" text)
+        (str "@" (html [:a {:href "http://twitter.com/$1"} "$1"])))))
+
 (defn twitter-status 
     ([tweet]
         (html 
             [:div {:class "tweet"} 
-                [:div {:class "tweet-text"} (tweet "text")]
+                [:div {:class "tweet-text"} 
+                    (link-replies (urlize (tweet "text")))]
                 [:div {:class "tweet-user"} ((tweet "user" {}) "name" '()) ]
             ])))
 

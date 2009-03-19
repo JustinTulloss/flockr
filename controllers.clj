@@ -12,17 +12,26 @@
         (if (and (@session :twitter-user) (@session :twitter-password))
             (page "Your Flock" 
                 (html 
-                    [:h1 "Welcome " twitter-name]
-                    [:form#twitter {:method "POST"}
-                        [:input#status {:type "text", :name "status"}]
-                        [:input#update {:type "submit", :name "update", :value "update my twitter"}]
-                    ]
+                    (center-dialog (html [:div {:class "question"} "What are you doing?"]
+                        (html [:form#twitter {:method "POST"}
+                            [:textarea#status {:name "status"}]
+                            [:input#update {:type "submit", :name "update", :value "update my twitter"}]
+                            [:div.r]
+                        ])))
                     [:div.feed-grid
                         [:div {:class "feed-column left"}
+                            [:div.feed-panel
+                                (twitter-feed "Following" 
+                                    (twitter/rest-get "friends_timeline" 
+                                        (@session :twitter-user) 
+                                        (@session :twitter-password)))
+                            ]
                             [:div.feed-panel
                                 (twitter-feed "Public" 
                                     (twitter/rest-get "public_timeline"))
                             ]
+                        ]
+                        [:div {:class "feed-column right"}
                             [:div.feed-panel
                                 (twitter-feed 
                                     (str "Hollas " (link-twitter-page twitter-name))
@@ -31,24 +40,8 @@
                                         (@session :twitter-password)))
                             ]
                             [:div.feed-panel
-                                (twitter-feed "Public" 
-                                    (twitter/rest-get "public_timeline"
-                                        (@session :twitter-user) 
-                                        (@session :twitter-password)))
-                            ]
-                        ]
-                        [:div {:class "feed-column right"}
-                            [:div.feed-panel
-                                (twitter-feed "Friends" 
-                                    (twitter/rest-get "friends_timeline" 
-                                        (@session :twitter-user) 
-                                        (@session :twitter-password)))
-                            ]
-                            [:div.feed-panel
                                 (twitter-feed "#pre OR Palm"
                                     (twitter/search "#pre OR Palm"))
-                            ]
-                            [:div.feed-panel
                             ]
                         ]
                     ]
@@ -57,14 +50,14 @@
             (page "Your Flock"
                 (html 
                     [:h1 "Welcome " twitter-name]
-                    [:h3 "Please enter your twitter password"]
-                    [:form {:method "POST", :action "/login"}
-                        [:div
-                            [:input {:type "hidden", :name "twitter-user" :value twitter-name}]
-                            [:input {:type "password", :name "twitter-password"}]
-                            [:input {:type "submit", :value "login"}]
-                        ]
-                    ])))))
+                    (center-dialog (html [:h3 "Please enter your twitter password"]
+                        [:form {:method "POST", :action "/login"}
+                            [:div
+                                [:input {:type "hidden", :name "twitter-user" :value twitter-name}]
+                                [:input {:type "password", :name "twitter-password"}]
+                                [:input {:type "submit", :value "login"}]
+                            ]
+                        ])))))))
 
 
 (defn home

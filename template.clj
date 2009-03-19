@@ -25,6 +25,10 @@
             ]
         ])))
 
+(defn center-dialog
+    ([markup]
+        (html [:center [:div {:class "dialog"} markup]])))
+
 (defn link-twitter-page
     "Takes a twitter user name and returns a link with an @ in front of it"
     ([twitter-name]
@@ -51,6 +55,9 @@
     ([tweet]
         (html 
             [:div {:class "tweet"} 
+                [:div {:class "tweet-photo"} 
+                    [:img {:src ((tweet "user" {}) "profile_image_url" '())}]
+                ]
                 [:div {:class "tweet-text"} 
                     (link-replies (urlize (tweet "text")))]
                 (when (tweet "user")

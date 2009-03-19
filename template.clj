@@ -47,7 +47,12 @@
             [:div {:class "tweet"} 
                 [:div {:class "tweet-text"} 
                     (link-replies (urlize (tweet "text")))]
-                [:div {:class "tweet-user"} ((tweet "user" {}) "name" '()) ]
+                (when (tweet "user")
+                    [:div {:class "tweet-user"} 
+                        (html [:a {:href 
+                            (str "http://twitter.com/" 
+                                ((tweet "user" {}) "screen_name" '()))} 
+                            ((tweet "user" {}) "name" '())]) ])
             ])))
 
 (defn twitter-feed

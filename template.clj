@@ -25,6 +25,12 @@
             ]
         ])))
 
+(defn link-twitter-page
+    "Takes a twitter user name and returns a link with an @ in front of it"
+    ([twitter-name]
+        (str "@" (html [:a {:href (str "http://twitter.com/" twitter-name)} 
+            twitter-name]))))
+
 (defn urlize
     "A function that takes some text and creates links out of URLs
     that it finds"

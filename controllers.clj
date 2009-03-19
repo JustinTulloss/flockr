@@ -24,12 +24,17 @@
                                     (twitter/rest-get "public_timeline"))
                             ]
                             [:div.feed-panel
-                                (twitter-feed "Public" 
-                                    (twitter/rest-get "public_timeline"))
+                                (twitter-feed 
+                                    (str "Hollas " (link-twitter-page twitter-name))
+                                    (twitter/rest-get "replies"
+                                        (@session :twitter-user) 
+                                        (@session :twitter-password)))
                             ]
                             [:div.feed-panel
                                 (twitter-feed "Public" 
-                                    (twitter/rest-get "public_timeline"))
+                                    (twitter/rest-get "public_timeline"
+                                        (@session :twitter-user) 
+                                        (@session :twitter-password)))
                             ]
                         ]
                         [:div {:class "feed-column right"}

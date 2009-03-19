@@ -20,24 +20,28 @@
                     [:div.feed-grid
                         [:div {:class "feed-column left"}
                             [:div.feed-panel
-                                (twitter-feed "Public" (twitter/rest-get "public_timeline"))
+                                (twitter-feed "Public" 
+                                    (twitter/rest-get "public_timeline"))
                             ]
                             [:div.feed-panel
-                                (twitter-feed "Public" (twitter/rest-get "public_timeline"))
+                                (twitter-feed "Public" 
+                                    (twitter/rest-get "public_timeline"))
                             ]
                             [:div.feed-panel
-                                (twitter-feed "Public" (twitter/rest-get "public_timeline"))
+                                (twitter-feed "Public" 
+                                    (twitter/rest-get "public_timeline"))
                             ]
                         ]
                         [:div {:class "feed-column right"}
                             [:div.feed-panel
                                 (twitter-feed "Friends" 
-                                (twitter/rest-get "friends_timeline" 
-                                    (@session :twitter-user) (@session :twitter-password)))
+                                    (twitter/rest-get "friends_timeline" 
+                                        (@session :twitter-user) 
+                                        (@session :twitter-password)))
                             ]
                             [:div.feed-panel
-                                (twitter-feed "#pre"
-                                    (twitter/search "#pre"))
+                                (twitter-feed "#pre OR Palm"
+                                    (twitter/search "#pre OR Palm"))
                             ]
                             [:div.feed-panel
                             ]

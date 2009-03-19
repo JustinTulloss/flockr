@@ -36,11 +36,10 @@
                                     (@session :twitter-user) (@session :twitter-password)))
                             ]
                             [:div.feed-panel
+                                (twitter-feed "#pre"
+                                    (twitter/search "#pre"))
                             ]
                             [:div.feed-panel
-                                (twitter-feed "#palmpre"
-                                    (get (read-json-string (let [[status headers body]
-                                        (http-get (str "http://search.twitter.com/search.json?q=%23palmpre") )] body)) "results"))
                             ]
                         ]
                     ]

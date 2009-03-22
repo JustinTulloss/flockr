@@ -40,7 +40,7 @@
     that it finds"
     ([text]
         (.replaceAll 
-            (re-matcher #"https?://[-\w]+\.\w[-\w/]*+" text)
+            (re-matcher #"https?://[-\w/\.]*+" text)
         (html [:a {:href "$0"} "$0"])))) 
 
 (defn link-replies

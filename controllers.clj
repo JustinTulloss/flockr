@@ -5,59 +5,64 @@
     (:use compojure) 
     (:use clojure.contrib.json.read)
     (:use clj-http-client.core)
+    (:require tokyo-cabinet)
     (:refer flockr.template))
 
 (defn flockr
     ([twitter-name session]
-        (if (and (@session :twitter-user) (@session :twitter-password))
-            (page "Your Flock" 
-                (html 
-                    (center-dialog (html [:div {:class "question"} "What are you doing?"]
-                        (html [:form#twitter {:method "POST"}
-                            [:textarea#status {:name "status"}]
-                            [:input#update {:type "submit", :name "update", :value "update my twitter"}]
-                            [:div.r]
-                        ])))
-                    [:div.feed-grid
-                        [:div {:class "feed-column left"}
-                            [:div.feed-panel
-                                (twitter-feed "Following" 
-                                    (twitter/rest-get "friends_timeline" 
-                                        (@session :twitter-user) 
-                                        (@session :twitter-password)))
+        (tokyo-cabinet/use "user-prefs.hdb"
+            (tokyo-cabinet/put "Hello World" "Saying Hi! to the big old world out there")
+            (println (tokyo-cabinet/get "Hello World")))
+
+            (if (and (@session :twitter-user) (@session :twitter-password))
+                (page "Your Flock" 
+                    (html 
+                        (center-dialog (html [:div {:class "question"} "What are you doing?"]
+                            (html [:form#twitter {:method "POST"}
+                                [:textarea#status {:name "status"}]
+                                [:input#update {:type "submit", :name "update", :value "update my twitter"}]
+                                [:div.r]
+                            ])))
+                        [:div.feed-grid
+                            [:div {:class "feed-column left"}
+                                [:div.feed-panel
+                                    (twitter-feed "Following" 
+                                        (twitter/rest-get "friends_timeline" 
+                                            (@session :twitter-user) 
+                                            (@session :twitter-password)))
+                                ]
+                                [:div.feed-panel
+                                    (twitter-feed "Public" 
+                                        (twitter/rest-get "public_timeline"))
+                                ]
                             ]
-                            [:div.feed-panel
-                                (twitter-feed "Public" 
-                                    (twitter/rest-get "public_timeline"))
+                            [:div {:class "feed-column right"}
+                                [:div.feed-panel
+                                    (twitter-feed 
+                                        (str "Hollas " (link-twitter-page twitter-name))
+                                        (twitter/rest-get "replies"
+                                            (@session :twitter-user) 
+                                            (@session :twitter-password)))
+                                ]
+                                [:div.feed-panel
+                                    (twitter-feed "#illini OR Illinois OR U of I"
+                                        (twitter/search "#illini OR Illinois OR \"U of I\""))
+                                ]
                             ]
                         ]
-                        [:div {:class "feed-column right"}
-                            [:div.feed-panel
-                                (twitter-feed 
-                                    (str "Hollas " (link-twitter-page twitter-name))
-                                    (twitter/rest-get "replies"
-                                        (@session :twitter-user) 
-                                        (@session :twitter-password)))
-                            ]
-                            [:div.feed-panel
-                                (twitter-feed "#pre OR Palm"
-                                    (twitter/search "#pre OR Palm"))
-                            ]
-                        ]
-                    ]
-                    [:div.r]
-                    ))
-            (page "Your Flock"
-                (html 
-                    [:h1 "Welcome " twitter-name]
-                    (center-dialog (html [:h3 "Please enter your twitter password"]
-                        [:form {:method "POST", :action "/login"}
-                            [:div
-                                [:input {:type "hidden", :name "twitter-user" :value twitter-name}]
-                                [:input {:type "password", :name "twitter-password"}]
-                                [:input {:type "submit", :value "login"}]
-                            ]
-                        ])))))))
+                        [:div.r]
+                        ))
+                (page "Your Flock"
+                    (html 
+                        [:h1 "Welcome " twitter-name]
+                        (center-dialog (html [:h3 "Please enter your twitter password"]
+                            [:form {:method "POST", :action "/login"}
+                                [:div
+                                    [:input {:type "hidden", :name "twitter-user" :value twitter-name}]
+                                    [:input {:type "password", :name "twitter-password"}]
+                                    [:input {:type "submit", :value "login"}]
+                                ]
+                            ])))))))
 
 
 (defn home

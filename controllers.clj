@@ -1,68 +1,62 @@
+; Justin Tulloss
+;
+; Controllers for flockr
+
+
 (load-file "./template.clj")
-(load-file "./twitter-model.clj")
+(load-file "./channels.clj")
+(load-file "./prefs.clj")
 
 (ns flockr.controllers
     (:use compojure) 
-    (:use clojure.contrib.json.read)
     (:use clj-http-client.core)
-    (:require tokyo-cabinet)
     (:refer flockr.template))
 
-(defn flockr
-    ([twitter-name session]
-        (tokyo-cabinet/use "user-prefs.hdb"
-            (tokyo-cabinet/put "Hello World" "Saying Hi! to the big old world out there")
-            (println (tokyo-cabinet/get "Hello World")))
-
-            (if (and (@session :twitter-user) (@session :twitter-password))
-                (page "Your Flock" 
-                    (html 
-                        (center-dialog (html [:div {:class "question"} "What are you doing?"]
-                            (html [:form#twitter {:method "POST"}
-                                [:textarea#status {:name "status"}]
-                                [:input#update {:type "submit", :name "update", :value "update my twitter"}]
-                                [:div.r]
-                            ])))
-                        [:div.feed-grid
-                            [:div {:class "feed-column left"}
-                                [:div.feed-panel
-                                    (twitter-feed "Following" 
-                                        (twitter/rest-get "friends_timeline" 
-                                            (@session :twitter-user) 
-                                            (@session :twitter-password)))
-                                ]
-                                [:div.feed-panel
-                                    (twitter-feed "Public" 
-                                        (twitter/rest-get "public_timeline"))
-                                ]
+(defn flockr [twitter-name session]
+    (if (and (@session :twitter-user) (@session :twitter-password))
+        (let [prefs (flockr.prefs/get (@session :twitter-user))]
+            (page "Your Flock" 
+                (html 
+                    (center-dialog (html [:div {:class "question"} "What are you doing?"]
+                        (html [:form#twitter {:method "POST"}
+                            [:textarea#status {:name "status"}]
+                            [:input#update {:type "submit", :name "update", :value "update my twitter"}]
+                            [:div.r]
+                        ])))
+                    [:div.feed-grid
+                        ; Get channels out of user preferences or use the
+                        ; defaults
+                        (let [channels 
+                            (:channels prefs flockr.channels/*default-channels*)]
+                            (html [:div {:class "feed-column left"}
+                                (map (fn [channel]
+                                    (println channel)
+                                    [:div.feed-panel
+                                        (flockr.channels/render-channel 
+                                            channel session)
+                                    ]) (:1 channels))
                             ]
                             [:div {:class "feed-column right"}
-                                [:div.feed-panel
-                                    (twitter-feed 
-                                        (str "Hollas " (link-twitter-page twitter-name))
-                                        (twitter/rest-get "replies"
-                                            (@session :twitter-user) 
-                                            (@session :twitter-password)))
-                                ]
-                                [:div.feed-panel
-                                    (twitter-feed "#illini OR Illinois OR U of I"
-                                        (twitter/search "#illini OR Illinois OR \"U of I\""))
-                                ]
+                                (map (fn [channel]
+                                    [:div.feed-panel
+                                        (flockr.channels/render-channel 
+                                            channel session)
+                                    ]) (:2 channels))
+                            ]))
+                    ]
+                    [:div.r]
+                    )))
+            (page "Your Flock"
+                (html 
+                    [:h1 "Welcome " twitter-name]
+                    (center-dialog (html [:h3 "Please enter your twitter password"]
+                        [:form {:method "POST", :action "/login"}
+                            [:div
+                                [:input {:type "hidden", :name "twitter-user" :value twitter-name}]
+                                [:input {:type "password", :name "twitter-password"}]
+                                [:input {:type "submit", :value "login"}]
                             ]
-                        ]
-                        [:div.r]
-                        ))
-                (page "Your Flock"
-                    (html 
-                        [:h1 "Welcome " twitter-name]
-                        (center-dialog (html [:h3 "Please enter your twitter password"]
-                            [:form {:method "POST", :action "/login"}
-                                [:div
-                                    [:input {:type "hidden", :name "twitter-user" :value twitter-name}]
-                                    [:input {:type "password", :name "twitter-password"}]
-                                    [:input {:type "submit", :value "login"}]
-                                ]
-                            ])))))))
+                        ]))))))
 
 
 (defn home

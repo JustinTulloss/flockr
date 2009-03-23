@@ -22,3 +22,10 @@
         ((read-json-string (let [[status headers body]
             (http-get (str "http://search.twitter.com/search.json?q=" 
                 (URLEncoder/encode term "UTF-8")) )] body)) "results")))
+
+(defn update
+    ([status username password]
+        (read-json-string (let [[return-status headers body]
+            (http-post-auth 
+                (str *twitter-url* "update.json") 
+                username password (str "status=" (URLEncoder/encode status)))] body))))

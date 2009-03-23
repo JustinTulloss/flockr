@@ -17,7 +17,7 @@
         (page "Your Flock" 
             (html 
                 (center-dialog (html [:div {:class "question"} "What are you doing?"]
-                    (html [:form#twitter {:method "POST"}
+                    (html [:form#twitter {:method "POST" :action "/update"}
                         [:textarea#status {:name "status"}]
                         [:input#update {:type "submit", :name "update", :value "update my twitter"}]
                         [:div.r]
@@ -89,6 +89,12 @@
             (key entry) 
             (val entry)))
         params))
+
+(defn update [params session]
+    (twitter/update (params :status) 
+        (@session :twitter-user)
+        (@session :twitter-password))
+    (redirect-to (str "/" (@session :twitter-user))))
 
 (defn login
     ([params session]

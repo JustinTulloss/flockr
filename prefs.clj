@@ -3,17 +3,17 @@
 ; Deals with the preferences.
 (ns flockr.prefs
     (:refer-clojure :exclude [get])
-    (:use clojure.contrib.json.read)
-    (:use clojure.contrib.json.write)
     (:require tokyo-cabinet))
 
-(def *db-file* "user-prefs.hdb")
+(def *db-file* "user-prefs.bdb")
 
-(defn get [username]
-    (tokyo-cabinet/use *db-file*
-        (let [prefs (tokyo-cabinet/get username)]
-            (if prefs (read-json-string(prefs)) nil))))
+(defn get 
+    ([username pref default]
+        (tokyo-cabinet/use *db-file* :bdb
+            (or (tokyo-cabinet/get (str username "_" pref)) default)))
+    ([username pref]
+        (get username pref nil)))
 
-(defn save [username prefs]
-    (tokyo-cabinet/use *db-file*
-        (tokyo-cabinet/put (json-str prefs))))
+(defn save [username pref value]
+    (tokyo-cabinet/use *db-file* :bdb
+        (tokyo-cabinet/put (str username "_" pref) (str value))))

@@ -14,49 +14,48 @@
 
 (defn flockr [twitter-name session]
     (if (and (@session :twitter-user) (@session :twitter-password))
-        (let [prefs (flockr.prefs/get (@session :twitter-user))]
-            (page "Your Flock" 
-                (html 
-                    (center-dialog (html [:div {:class "question"} "What are you doing?"]
-                        (html [:form#twitter {:method "POST"}
-                            [:textarea#status {:name "status"}]
-                            [:input#update {:type "submit", :name "update", :value "update my twitter"}]
-                            [:div.r]
-                        ])))
-                    [:div.feed-grid
-                        ; Get channels out of user preferences or use the
-                        ; defaults
-                        (let [channels 
-                            (:channels prefs flockr.channels/*default-channels*)]
-                            (html [:div {:class "feed-column left"}
-                                (map (fn [channel]
-                                    (println channel)
-                                    [:div.feed-panel
-                                        (flockr.channels/render-channel 
-                                            channel session)
-                                    ]) (:1 channels))
-                            ]
-                            [:div {:class "feed-column right"}
-                                (map (fn [channel]
-                                    [:div.feed-panel
-                                        (flockr.channels/render-channel 
-                                            channel session)
-                                    ]) (:2 channels))
-                            ]))
-                    ]
-                    [:div.r]
-                    )))
-            (page "Your Flock"
-                (html 
-                    [:h1 "Welcome " twitter-name]
-                    (center-dialog (html [:h3 "Please enter your twitter password"]
-                        [:form {:method "POST", :action "/login"}
-                            [:div
-                                [:input {:type "hidden", :name "twitter-user" :value twitter-name}]
-                                [:input {:type "password", :name "twitter-password"}]
-                                [:input {:type "submit", :value "login"}]
-                            ]
-                        ]))))))
+        (page "Your Flock" 
+            (html 
+                (center-dialog (html [:div {:class "question"} "What are you doing?"]
+                    (html [:form#twitter {:method "POST"}
+                        [:textarea#status {:name "status"}]
+                        [:input#update {:type "submit", :name "update", :value "update my twitter"}]
+                        [:div.r]
+                    ])))
+                [:div.feed-grid
+                    ; Get channels out of user preferences or use the
+                    ; defaults
+                    (let [channels 
+                        (flockr.prefs/get (@session :twitter-user) :channels 
+                            flockr.channels/*default-channels*)]
+                        (html [:div {:class "feed-column left"}
+                            (map (fn [channel]
+                                [:div.feed-panel
+                                    (flockr.channels/render-channel 
+                                        channel session)
+                                ]) (:1 channels))
+                        ]
+                        [:div {:class "feed-column right"}
+                            (map (fn [channel]
+                                [:div.feed-panel
+                                    (flockr.channels/render-channel 
+                                        channel session)
+                                ]) (:2 channels))
+                        ]))
+                ]
+                [:div.r]
+                ))
+        (page "Your Flock"
+            (html 
+                [:h1 "Welcome " twitter-name]
+                (center-dialog (html [:h3 "Please enter your twitter password"]
+                    [:form {:method "POST", :action "/login"}
+                        [:div
+                            [:input {:type "hidden", :name "twitter-user" :value twitter-name}]
+                            [:input {:type "password", :name "twitter-password"}]
+                            [:input {:type "submit", :value "login"}]
+                        ]
+                    ]))))))
 
 
 (defn home

@@ -8,10 +8,16 @@ var Flockr = new Singleton({
     /* Executed when the DOM is ready */
     initialize: function(self) {
         $('.feed .title').bind("click", self.toggleFeed);
+        $('.feed .title .remove').bind("click", self.removeFeed);
     },
 
     toggleFeed: function(self, e) {
         e.stopPropagation();
-        $(e.target).siblings(".tweet").slideToggle('fast');
+        $(e.target).siblings(".tweets").slideToggle('fast');
+    },
+
+    removeFeed: function(self, e) {
+        e.stopPropagation();
+        $(e.target).parents('.feed').remove();
     }
 });

@@ -2,13 +2,14 @@
 ; Always returns clojure data structures
 
 (ns twitter
+    (:refer-clojure :exclude [get])
     (:use clojure.contrib.json.read)
     (:use clj-http-client.core)
     (:import (java.net URLEncoder)))
 
 (def *twitter-url* "https://twitter.com/statuses/")
 
-(defn rest-get
+(defn get
     ([method]
         (read-json-string (let [[status headers body]
             (http-get (str *twitter-url* method ".json"))] body)))
@@ -18,6 +19,6 @@
 
 (defn search
     ([term]
-        (get (read-json-string (let [[status headers body]
+        ((read-json-string (let [[status headers body]
             (http-get (str "http://search.twitter.com/search.json?q=" 
                 (URLEncoder/encode term "UTF-8")) )] body)) "results")))

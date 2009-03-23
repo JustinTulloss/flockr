@@ -14,6 +14,9 @@
     (POST "/login"
         (login params session))
 
+    (POST "/save-prefs"
+        (save-prefs params session))
+
     (GET "/:twitter-name"
         (flockr (route :twitter-name) session))
 

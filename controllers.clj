@@ -28,14 +28,14 @@
                     (let [channels 
                         (flockr.prefs/get (@session :twitter-user) :channels 
                             flockr.channels/*default-channels*)]
-                        (html [:div {:class "feed-column left"}
+                        (html [:div#col1 {:class "feed-column left"}
                             (map (fn [channel]
                                 [:div.feed-panel
                                     (flockr.channels/render-channel 
                                         channel session)
                                 ]) (:1 channels))
                         ]
-                        [:div {:class "feed-column right"}
+                        [:div#col2 {:class "feed-column right"}
                             (map (fn [channel]
                                 [:div.feed-panel
                                     (flockr.channels/render-channel 
@@ -82,6 +82,13 @@
                         ]
                     ]
                 ]))))
+
+(defn save-prefs [params session]
+    (map (fn [entry] (flockr.prefs/save
+            (@session :twitter-user) 
+            (key entry) 
+            (val entry)))
+        params))
 
 (defn login
     ([params session]

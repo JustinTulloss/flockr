@@ -15,8 +15,13 @@
                 ]
             [:body
                 [:div#menu {:class "menu"}
-                    [:a {:href "/"} "home"]
-                    [:a {:href "/logout"} "logout"]
+                    [:span {:class "links"}
+                        [:a {:href "#"} "add channel"]
+                        [:a {:href "/logout"} "logout"]
+                    ]
+                    [:a {:href "/"}
+                        [:img {:src "/images/logo.png", :alt "floc.kr"}]
+                    ]
                 ]
                 body
                 [:div#footer {:class "footer"}
@@ -54,7 +59,7 @@
 (defn twitter-status 
     ([tweet]
         (html 
-            [:div {:class "tweet"} 
+            [:div {:class "tweet" } 
                 [:div {:class "tweet-photo"} 
                     [:img {:src ((tweet "user" {}) "profile_image_url" '())}]
                 ]
@@ -69,8 +74,16 @@
             ])))
 
 (defn twitter-feed
-    ([title tweets]
+    ([title tweets show]
         (html [:div {:class "feed"}
-                [:div {:class "title"} title]
-                (map twitter-status tweets)])))
+                [:div {:class "title"}
+                    [:span {:class "options"}
+                        [:a {:href "#"} [:img.remove {:src "images/x.png"}]]
+                    ]
+                    title
+                ]
+                [:div {:class "tweets" :style (when (not show) "display:none;")}
+                    (map twitter-status tweets)
+                ]
+            ])))
 

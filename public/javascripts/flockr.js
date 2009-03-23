@@ -9,6 +9,10 @@ var Flockr = new Singleton({
     initialize: function(self) {
         $('.feed .title').bind("click", self.toggleFeed);
         $('.feed .title .remove').bind("click", self.removeFeed);
+        $('#col1, #col2').sortable({
+            connectWith: '.feed-column',
+            placeholder: 'feed-panel panel-placeholder'
+        });
     },
 
     toggleFeed: function(self, e) {

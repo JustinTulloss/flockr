@@ -86,12 +86,21 @@ img {
     width: 50%;
 }
 
+.panel-placeholder {
+    border: 5px dashed #66CC00;
+    height: 150px;
+}
+
 .left {
     float: left;
 }
 
 .right {
     float: right;
+}
+
+.feed-column {
+    padding-bottom: 100px;
 }
 
 .feed-panel {

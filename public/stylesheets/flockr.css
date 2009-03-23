@@ -26,18 +26,31 @@ a:hover {
     text-decoration: underline;
 }
 
+img {
+    border: none;
+}
+
 .menu {
     margin: 0;
     padding: 15px;
-    text-align: right;
     background-color: #844000;
     border-bottom: 8px solid #66CC00;
 }
 
-.menu a {
+.menu .links {
+    margin-top: 16px;
+    float: right;
+}
+
+.menu a{
     margin: 0 10px;
     /*color: white;*/
     color: yellow;
+}
+
+.menu img {
+    border: none;
+    vertical-align: middle;
 }
 
 .content {
@@ -106,6 +119,11 @@ a:hover {
     -webkit-border-radius: 5px;
 }
 
+.feed .title .options{
+    padding-top: 2px;
+    float: right;
+}
+
 .feed .tweet {
     overflow: hidden;
     margin: 8px 0;
@@ -127,7 +145,7 @@ a:hover {
 
 .footer {
     margin-top: 10px;
-    border-top: 1px solid #FF6600;
+    border-top: 1px solid #FE4712;
     padding: 10px;
     text-align: center;
     font-size: 12pt;

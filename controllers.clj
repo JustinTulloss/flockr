@@ -39,7 +39,7 @@
                 [:div.feed-grid
                     ; Get channels out of user preferences or use the
                     ; defaults
-                    (let [channels 
+                    (time(let [channels 
                         (flockr.prefs/get (@session :twitter-user) :channels 
                             flockr.channels/*default-channels*)]
                             (let [channel-agents [
@@ -55,8 +55,8 @@
                                             (flockr.channels/render-channel 
                                                 channel session)
                                         ))) (:2 channels))]]
-                            (time (apply await (concat 
-                                (first channel-agents) (second channel-agents))))
+                            (apply await (concat 
+                                (first channel-agents) (second channel-agents)))
                         (html [:div#col1 {:class "feed-column left"}
                             (map (fn [ch-agent]
                                 (html [:div.feed-panel @ch-agent])) 
@@ -66,7 +66,7 @@
                             (map (fn [ch-agent]
                                 (html [:div.feed-panel @ch-agent])) 
                                 (second channel-agents))
-                        ])))
+                        ]))))
                 ]
                 [:div.r]
                 ))

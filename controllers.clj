@@ -55,8 +55,8 @@
                                             (flockr.channels/render-channel 
                                                 channel session)
                                         ))) (:2 channels))]]
-                            (apply await (concat 
-                                (first channel-agents) (second channel-agents)))
+                            (time (apply await (concat 
+                                (first channel-agents) (second channel-agents))))
                         (html [:div#col1 {:class "feed-column left"}
                             (map (fn [ch-agent]
                                 (html [:div.feed-panel @ch-agent])) 

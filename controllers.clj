@@ -43,30 +43,41 @@
                         (flockr.prefs/get (@session :twitter-user) :channels 
                             flockr.channels/*default-channels*)]
                             (let [channel-agents [
-                                (map (fn [channel]
-                                    (send-off (agent "") 
-                                        (fn [_]
-                                            (flockr.channels/render-channel
-                                                channel session)
-                                        ))) (:1 channels))
-                                (map (fn [channel]
-                                    (send-off (agent "") 
-                                        (fn [_]
-                                            (flockr.channels/render-channel 
-                                                channel session)
-                                        ))) (:2 channels))]]
-                            (apply await (concat 
-                                (first channel-agents) (second channel-agents)))
-                        (html [:div#col1 {:class "feed-column left"}
-                            (map (fn [ch-agent]
-                                (html [:div.feed-panel @ch-agent])) 
-                                (first channel-agents))
-                        ]
-                        [:div#col2 {:class "feed-column right"}
-                            (map (fn [ch-agent]
-                                (html [:div.feed-panel @ch-agent])) 
-                                (second channel-agents))
-                        ]))))
+                                (map 
+                                    (fn [channel]
+                                        (send-off (agent "") 
+                                            (fn [_]
+                                                (flockr.channels/render-channel
+                                                    channel 
+                                                    session)
+                                            ))) 
+                                    (:1 channels))
+                                (map 
+                                    (fn [channel]
+                                        (send-off (agent "") 
+                                            (fn [_]
+                                                (flockr.channels/render-channel 
+                                                    channel session)
+                                            ))) 
+                                    (:2 channels))]]
+                                (apply 
+                                    await 
+                                    (concat 
+                                        (first channel-agents) 
+                                        (second channel-agents)))
+
+                                (html [:div#col1 {:class "feed-column left"}
+                                    (map 
+                                        (fn [ch-agent]
+                                            (html [:div.feed-panel @ch-agent])) 
+                                            (first channel-agents))
+                                ]
+                                [:div#col2 {:class "feed-column right"}
+                                    (map 
+                                        (fn [ch-agent]
+                                            (html [:div.feed-panel @ch-agent])) 
+                                            (second channel-agents))
+                                ]))))
                 ]
                 [:div.r]
                 ))

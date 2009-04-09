@@ -30,7 +30,8 @@
     (if (and (@session :twitter-user) (@session :twitter-password))
         (page "Your Flock" 
             (html 
-                (center-dialog (html [:div {:class "question"} "What are you doing?"]
+                (center-dialog 
+                    (html [:div {:class "question"} "What are you doing?"]
                     (html [:form#twitter {:method "POST" :action "/update"}
                         [:textarea#status {:name "status"}]
                         [:input#update {:type "submit", :name "update", :value "update my twitter"}]
@@ -87,7 +88,10 @@
                 (center-dialog (html [:h3 "Please enter your twitter password"]
                     [:form {:method "POST", :action "/login"}
                         [:div
-                            [:input {:type "hidden", :name "twitter-user" :value twitter-name}]
+                            [:input {
+                                :type "hidden", 
+                                :name "twitter-user" 
+                                :value twitter-name}]
                             [:input {:type "password", :name "twitter-password"}]
                             [:input {:type "submit", :value "login"}]
                         ]

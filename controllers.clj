@@ -28,46 +28,46 @@
 
 (defn flockr [twitter-name session]
     (if (and (@session :twitter-user) (@session :twitter-password))
-        (page "Your Flock" 
-            (html 
-                (center-dialog 
+        (page "Your Flock"
+            (html
+                (center-dialog
                     (html [:div {:class "question"} "What are you doing?"]
                     (html [:form#twitter {:method "POST" :action "/update"}
                         [:textarea#status {:name "status"}]
                         [:input#update {
-                            :type "submit", 
-                            :name "update", 
+                            :type "submit",
+                            :name "update",
                             :value "update my twitter"}]
                         [:div.r]
                     ])))
                 [:div.feed-grid
                     ; Get channels out of user preferences or use the
                     ; defaults
-                    (time (let [channels 
-                        (flockr.prefs/get (@session :twitter-user) :channels 
+                    (time (let [channels
+                        (flockr.prefs/get (@session :twitter-user) :channels
                             flockr.channels/*default-channels*)]
                             (let [channel-agents [
-                                (map 
+                                (map
                                     (fn [channel]
-                                        (send-off (agent "") 
+                                        (send-off (agent "")
                                             (fn [_]
                                                 (flockr.channels/render-channel
                                                     channel 
                                                     session)
-                                            ))) 
+                                            )))
                                     (first channels))
-                                (map 
+                                (map
                                     (fn [channel]
                                         (send-off (agent "") 
                                             (fn [_]
-                                                (flockr.channels/render-channel 
+                                                (flockr.channels/render-channel
                                                     channel session)
-                                            ))) 
+                                            )))
                                     (second channels))]]
-                                (apply 
-                                    await 
-                                    (concat 
-                                        (first channel-agents) 
+                                (apply
+                                    await
+                                    (concat
+                                        (first channel-agents)
                                         (second channel-agents)))
 
                                 (html [:div#col1 {:class "feed-column left"}

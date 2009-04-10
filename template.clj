@@ -24,10 +24,21 @@
                 [:head
                     [:title title]
                     [:link {:rel "stylesheet", :href "/stylesheets/flockr.css"}]
-                    [:script {:src "/javascripts/jquery-1.3.2.min.js", :type "text/javascript"}]
-                    [:script {:src "/javascripts/jquery-ui.js", :type "text/javascript"}]
-                    [:script {:src "/javascripts/cobra.js", :type "text/javascript"}]
-                    [:script {:src "/javascripts/flockr.js", :type "text/javascript"}]
+                    [:script {
+                        :src "/javascripts/jquery-1.3.2.min.js", 
+                        :type "text/javascript"}]
+                    [:script {
+                        :src "/javascripts/jquery-ui.js", 
+                        :type "text/javascript"}]
+                    [:script {
+                        :src "/javascripts/cobra.js", 
+                        :type "text/javascript"}]
+                    [:script {
+                        :src "/javascripts/json2.js", 
+                        :type "text/javascript"}]
+                    [:script {
+                        :src "/javascripts/flockr.js", 
+                        :type "text/javascript"}]
                 ]
             [:body
                 [:div#menu {:class "menu"}
@@ -62,7 +73,7 @@
     ([text]
         (.replaceAll 
             (re-matcher #"https?://[-\w/\.]*+" text)
-        (html [:a {:href "$0"} "$0"])))) 
+        (html [:a {:href "$0" :target "_blank"} "$0"])))) 
 
 (defn link-replies
     "Takes a tweet and links the @<username> components to the appropriate
@@ -90,8 +101,8 @@
             ])))
 
 (defn twitter-feed
-    ([title tweets show]
-        (html [:div {:class "feed"}
+    ([title tweets id show]
+        (html [:div {:class "feed" :x-column-id id}
                 [:div {:class "title"}
                     [:span {:class "options"}
                         [:a {:href "#"} [:img.remove {:src "images/x.png"}]]

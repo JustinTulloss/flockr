@@ -45,14 +45,14 @@ var Flockr = new Singleton({
     save_columns: function(self) {
         //get column positions
         var columns = [];
-        columns[1] = $.map($("#col1").find(".feed"), function(el, i) {
+        columns[0] = $.map($("#col1").find(".feed"), function(el, i) {
             return parseInt(el.getAttribute("x-column-id"));
         });
-        columns[2] = $.map($("#col2").find(".feed"), function(el, i) {
+        columns[1] = $.map($("#col2").find(".feed"), function(el, i) {
             return parseInt(el.getAttribute("x-column-id"));
         });
         //save columns positions
-        jQuery.post("/save_preferences", {
+        jQuery.post("/save-prefs", {
                 columns: JSON.stringify(columns)
             },
             function(response) {

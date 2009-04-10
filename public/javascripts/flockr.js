@@ -27,7 +27,8 @@ var Flockr = new Singleton({
         $('.feed .title .remove').bind("click", self.removeFeed);
         $('#col1, #col2').sortable({
             connectWith: '.feed-column',
-            placeholder: 'feed-panel panel-placeholder'
+            placeholder: 'feed-panel panel-placeholder',
+            stop: self.save_columns
         });
     },
 
@@ -39,5 +40,26 @@ var Flockr = new Singleton({
     removeFeed: function(self, e) {
         e.stopPropagation();
         $(e.target).parents('.feed').remove();
+    },
+
+    save_columns: function(self) {
+        //get column positions
+        var columns = {};
+        columns[1] = $.map($("#col1").find(".feed"), function(el, i) {
+            return parseInt(el.getAttribute("x-column-id"));
+        });
+        columns[2] = $.map($("#col2").find(".feed"), function(el, i) {
+            return parseInt(el.getAttribute("x-column-id"));
+        });
+        //save columns positions
+        jQuery.post("/save_preferences", {
+                columns: JSON.stringify(columns)
+            },
+            function(response) {
+                if (response.success != true){
+                    console.error("Could not save preferences!");
+                }
+            }
+        );
     }
 });

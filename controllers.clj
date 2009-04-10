@@ -34,13 +34,16 @@
                     (html [:div {:class "question"} "What are you doing?"]
                     (html [:form#twitter {:method "POST" :action "/update"}
                         [:textarea#status {:name "status"}]
-                        [:input#update {:type "submit", :name "update", :value "update my twitter"}]
+                        [:input#update {
+                            :type "submit", 
+                            :name "update", 
+                            :value "update my twitter"}]
                         [:div.r]
                     ])))
                 [:div.feed-grid
                     ; Get channels out of user preferences or use the
                     ; defaults
-                    (time(let [channels 
+                    (time (let [channels 
                         (flockr.prefs/get (@session :twitter-user) :channels 
                             flockr.channels/*default-channels*)]
                             (let [channel-agents [
@@ -52,7 +55,7 @@
                                                     channel 
                                                     session)
                                             ))) 
-                                    (:1 channels))
+                                    (first channels))
                                 (map 
                                     (fn [channel]
                                         (send-off (agent "") 
@@ -60,7 +63,7 @@
                                                 (flockr.channels/render-channel 
                                                     channel session)
                                             ))) 
-                                    (:2 channels))]]
+                                    (second channels))]]
                                 (apply 
                                     await 
                                     (concat 
@@ -70,13 +73,13 @@
                                 (html [:div#col1 {:class "feed-column left"}
                                     (map 
                                         (fn [ch-agent]
-                                            (html [:div.feed-panel @ch-agent])) 
+                                            (html [:div.feed-panel @ch-agent]))
                                             (first channel-agents))
                                 ]
                                 [:div#col2 {:class "feed-column right"}
-                                    (map 
+                                    (map
                                         (fn [ch-agent]
-                                            (html [:div.feed-panel @ch-agent])) 
+                                            (html [:div.feed-panel @ch-agent]))
                                             (second channel-agents))
                                 ]))))
                 ]
@@ -124,6 +127,7 @@
                 ]))))
 
 (defn save-prefs [params session]
+    (println params)
     (map (fn [entry] (flockr.prefs/save
             (@session :twitter-user) 
             (key entry) 

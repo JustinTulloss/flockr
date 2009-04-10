@@ -59,16 +59,16 @@
     :friends (fn [session channel] "Not implemented")
 })
 
-(def *default-channels* {
-    :1 [
+(def *default-channels* [
+    [
         {:type :following :open true :id 1}
         {:type :replies :open false :id 2}
     ],
-    :2 [
+    [
         {:type :search, :terms "#flockr" :open true :id 3}
         {:type :public_timeline :open false :id 4}
     ]
-})
+])
 
 (defn render-channel [channel session]
     ((*render-types* (:type channel)) session channel))
